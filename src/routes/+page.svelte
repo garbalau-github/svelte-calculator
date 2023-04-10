@@ -2,29 +2,47 @@
   const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
   const operations = ['/', 'x', '+', '-', '='];
 
+  // States
   let selectedOperation = '';
+  let display = '';
 
+  // Handlers
   const handleOperationClick = (operation: string) => {
     selectedOperation = operation;
   };
+
+  const handleNumberClick = (number: string) => {
+    // Basic Validation
+    if (display === '' && number === '0') return;
+    if (number === '.' && display.includes('.')) return;
+    display += number;
+  }
+
 </script>
 
 <main>
   <div class='calculator'>
-    <h1>{selectedOperation}</h1>
-    <div class='results'></div>
+    <div class='results'>
+      {display}
+    </div>
     <div class='digits'>
       <div class='numbers'>
         <button class="btn btn-xlg btn-silver">C</button>
         {#each numbers as number (number)}
-          <button class={`btn ${number === '0' ? 'btn-lg' : null}`}>
+          <button 
+            on:click={() => handleNumberClick(number)}  
+            class={`btn ${number === '0' ? 'btn-lg' : null}`}>
             {number}
           </button>
         {/each}
       </div>
       <div class='operations'>
         {#each operations as operation (operation)}
-          <button class={`btn ${operation === selectedOperation ? 'btn-silver' : 'btn-orange'}`} on:click={() => handleOperationClick(operation)}>{operation}</button>
+          <button 
+            on:click={() => handleOperationClick(operation)}
+            class={`btn ${operation === selectedOperation ? 'btn-silver' : 'btn-orange'}`} >
+            {operation}
+          </button>
         {/each}
     </div>
   </div>
@@ -51,7 +69,10 @@
     font-size: 50px;
     display: flex;
     flex-direction: row-reverse;
-    margin-right: 10px;
+    background-color: dimgray;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 10px;
   }
   .digits {
     display: flex;

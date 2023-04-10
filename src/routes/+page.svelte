@@ -1,23 +1,30 @@
 <script lang="ts">
   const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
   const operations = ['/', 'x', '+', '-', '='];
+
+  let selectedOperation = '';
+
+  const handleOperationClick = (operation: string) => {
+    selectedOperation = operation;
+  };
 </script>
 
 <main>
   <div class='calculator'>
+    <h1>{selectedOperation}</h1>
     <div class='results'></div>
     <div class='digits'>
       <div class='numbers'>
         <button class="btn btn-xlg btn-silver">C</button>
-        {#each numbers as number}
+        {#each numbers as number (number)}
           <button class={`btn ${number === '0' ? 'btn-lg' : null}`}>
             {number}
           </button>
         {/each}
       </div>
       <div class='operations'>
-        {#each operations as operation}
-          <button class="btn btn-orange">{operation}</button>
+        {#each operations as operation (operation)}
+          <button class={`btn ${operation === selectedOperation ? 'btn-silver' : 'btn-orange'}`} on:click={() => handleOperationClick(operation)}>{operation}</button>
         {/each}
     </div>
   </div>
@@ -68,17 +75,18 @@
     color: white;
     margin: 5px;
     border: none;
+    cursor: pointer;
   }
   .btn-lg {
     width: 110px;
+  }
+  .btn-xlg {
+    width: 170px;
   }
   .btn-orange {
     background-color: orange;
   }
   .btn-silver {
     background-color: silver;
-  }
-  .btn-xlg {
-    width: 170px;
   }
 </style>
